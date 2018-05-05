@@ -1,0 +1,69 @@
+/**
+ * Zero To Blockchain multi-party finance network
+ */
+namespace org.acme.sintegralabsbc
+import composer.base.*
+
+participant Buyer identified by buyerID extends Member{
+    o String buyerID
+    
+}
+participant Seller identified by sellerID extends Member{
+    o String sellerID
+    
+}
+participant Shipper identified by shipperID extends Member {
+    o String shipperID
+}
+
+participant FinanceCo identified by financeCoID extends Member {
+    o String financeCoID
+    
+}
+
+asset Order identified by orderNumber {
+    o String orderNumber
+    o String status
+    o Integer amount
+    o String createdDate
+    o String boughtDate
+    o String orderedDate
+    o String paymentRequestedDate
+    o String paidDate
+    o String requestShipmentDate
+    o String deliveredDate
+
+    --> Buyer buyer
+    --> Seller seller
+    --> Shipper shipper
+    --> FinanceCo financeco
+
+}
+  transaction CreateOrder {
+    o Integer amount
+    --> Order order
+    --> Buyer buyer
+    --> Seller seller
+}
+  transaction Buy {
+    --> Order order
+    --> FinanceCo financeco
+}
+
+  transaction RequestShipping {
+    --> Order order
+    --> Shipper shipper
+}
+  transaction Deliver {
+    --> Order order
+    --> Shipper shipper
+}
+  transaction RequestPayment {
+    --> Order order
+    --> Buyer buyer
+    --> Seller seller
+    --> FinanceCo financeCo
+}
+  transaction Pay {
+    --> Order order
+}
